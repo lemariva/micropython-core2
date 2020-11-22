@@ -153,7 +153,7 @@ STATIC mp_obj_t mp_axp192_dc_enable(mp_uint_t n_args, const mp_obj_t *args)  {
     uint8_t ch = mp_obj_get_int(args[1]);
     uint8_t en = mp_obj_get_int(args[2]);
 
-    axp192_code = setPowerOutPut(ch, en);
+    axp192_code = setPowerOutPut(ch, en, true);
 
     return mp_obj_new_int(axp192_code);
 
@@ -202,7 +202,7 @@ STATIC mp_obj_t mp_axp192_ldo_enable(mp_uint_t n_args, const mp_obj_t *args)  {
     uint8_t ch = mp_obj_get_int(args[1]);
     uint8_t en = mp_obj_get_int(args[2]);
 
-    axp192_code = setPowerOutPut(ch, en);
+    axp192_code = setPowerOutPut(ch, en, false);
 
     return mp_obj_new_int(axp192_code);
 
@@ -312,6 +312,47 @@ STATIC mp_obj_t mp_axp192_limiting_off(mp_uint_t n_args, const mp_obj_t *args)  
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_limiting_off_obj, 1, 1, mp_axp192_limiting_off);
 
+STATIC mp_obj_t mp_axp192_set_gpio_mode(mp_uint_t n_args, const mp_obj_t *args)  {
+    mp_int_t axp192_code = 0;
+	if (n_args < 3) {
+		mp_raise_ValueError(MP_ERROR_TEXT("two arguments are required"));
+	}
+    uint8_t gpio = mp_obj_get_int(args[1]);
+    uint8_t mode = mp_obj_get_int(args[2]);
+
+    axp192_code = setGPIOMode(gpio, mode);
+
+    return mp_obj_new_int(axp192_code);
+
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_set_gpio_mode_obj, 1, 3, mp_axp192_set_gpio_mode);
+
+// STATIC mp_obj_t mp_axp192_gpio_read(mp_uint_t n_args, const mp_obj_t *args)  {
+//     mp_int_t axp192_code = 0;
+//     if (n_args < 2) {
+// 		mp_raise_ValueError(MP_ERROR_TEXT("one argument is required"));
+// 	}
+//     uint8_t gpio = mp_obj_get_int(args[1]);
+
+//     axp192_code = gpioRead(gpio);
+
+// 	return mp_obj_new_int(axp192_code);
+// }
+// STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_gpio_read_obj, 1, 2, mp_axp192_gpio_read);
+
+// STATIC mp_obj_t mp_axp192_gpio_write(mp_uint_t n_args, const mp_obj_t *args)  {
+//     mp_int_t axp192_code = 0;
+//     if (n_args < 3) {
+// 		mp_raise_ValueError(MP_ERROR_TEXT("two arguments are required"));
+// 	}
+//     uint8_t gpio = mp_obj_get_int(args[1]);
+//     uint8_t value = mp_obj_get_int(args[1]);
+
+//     axp192_code = gpioWrite(gpio, value);
+
+// 	return mp_obj_new_int(axp192_code);
+// }
+// STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_gpio_write_obj, 1, 3, mp_axp192_gpio_write);
 
 STATIC const mp_rom_map_elem_t hw_axp192_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_get_temp), MP_ROM_PTR(&mp_axp192_get_temp_obj) },
@@ -327,10 +368,26 @@ STATIC const mp_rom_map_elem_t hw_axp192_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_is_battery_connected), MP_ROM_PTR(&mp_axp192_battery_connected_obj) },
     { MP_ROM_QSTR(MP_QSTR_shutdown), MP_ROM_PTR(&mp_axp192_shutdown_obj) },
     { MP_ROM_QSTR(MP_QSTR_limiting_off), MP_ROM_PTR(&mp_axp192_limiting_off_obj) },
+    { MP_ROM_QSTR(MP_QSTR_gpio_mode), MP_ROM_PTR(&mp_axp192_set_gpio_mode_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_gpio_read), MP_ROM_PTR(&mp_axp192_gpio_read_obj) },    
+    // { MP_ROM_QSTR(MP_QSTR_gpio_write), MP_ROM_PTR(&mp_axp192_gpio_write_obj) },
     { MP_ROM_QSTR(MP_QSTR_LED_OFF), MP_ROM_INT(AXP20X_LED_OFF) },
     { MP_ROM_QSTR(MP_QSTR_LED_BLINK_1HZ), MP_ROM_INT(AXP20X_LED_BLINK_1HZ) },
     { MP_ROM_QSTR(MP_QSTR_LED_BLINK_4HZ), MP_ROM_INT(AXP20X_LED_BLINK_4HZ) },
     { MP_ROM_QSTR(MP_QSTR_LED_LOW_LEVEL), MP_ROM_INT(AXP20X_LED_LOW_LEVEL) },
+    { MP_ROM_QSTR(MP_QSTR_AXP_GPIO_0), MP_ROM_INT(AXP_GPIO_0) },
+    { MP_ROM_QSTR(MP_QSTR_AXP_GPIO_1), MP_ROM_INT(AXP_GPIO_1) },
+    { MP_ROM_QSTR(MP_QSTR_AXP_GPIO_2), MP_ROM_INT(AXP_GPIO_2) },
+    { MP_ROM_QSTR(MP_QSTR_AXP_GPIO_3), MP_ROM_INT(AXP_GPIO_3) },
+    { MP_ROM_QSTR(MP_QSTR_AXP_GPIO_4), MP_ROM_INT(AXP_GPIO_4) },
+    { MP_ROM_QSTR(MP_QSTR_IO_OUTPUT_LOW_MODE), MP_ROM_INT(AXP_IO_OUTPUT_LOW_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_INPUT_MODE), MP_ROM_INT(AXP_IO_INPUT_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_LDO_MODE), MP_ROM_INT(AXP_IO_LDO_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_ADC_MODE), MP_ROM_INT(AXP_IO_ADC_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_FLOATING_MODE), MP_ROM_INT(AXP_IO_FLOATING_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_OPEN_DRAIN_OUTPUT_MODE), MP_ROM_INT(AXP_IO_OPEN_DRAIN_OUTPUT_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_PWM_OUTPUT_MODE), MP_ROM_INT(AXP_IO_PWM_OUTPUT_MODE) },
+    { MP_ROM_QSTR(MP_QSTR_IO_OUTPUT_HIGH_MODE), MP_ROM_INT(AXP_IO_OUTPUT_HIGH_MODE) },
 };
 
 STATIC MP_DEFINE_CONST_DICT(hw_axp192_globals, hw_axp192_globals_table);

@@ -60,6 +60,13 @@ const uint8_t targetVolParams[] = {
     0b01100000
 };
 
+const uint8_t dcEnableOffset[] = {
+    -1, 
+    0x00, 
+    0x04, 
+    0x01
+};
+
 // static const uint8_t startupParams[], longPressParams[], shutdownParams[], targetVolParams[];
 //  uint8_t _outputReg;
 // uint8_t _address, _irq[5], _chip_id, _gpio[4];
@@ -143,7 +150,7 @@ char isExtenEnable()
     else if (_chip_id == AXP173_CHIP_ID) {
         uint8_t data;
         i2cdevReadByte(I2Cx, devAddr, AXP173_EXTEN_DC2_CTL, buffer);
-data = buffer[0];
+        data = buffer[0];
         return IS_OPEN(data, AXP173_CTL_EXTEN_BIT);
     }
     return 0;
@@ -198,7 +205,7 @@ char isDCDC3Enable()
     return IS_OPEN(_outputReg, AXP202_DCDC3);
 }
 
-int setPowerOutPut(uint8_t ch, uint8_t en)
+int setPowerOutPut(uint8_t ch, uint8_t en, bool dc)
 {
     uint8_t data;
     uint8_t val = 0;
@@ -223,10 +230,19 @@ int setPowerOutPut(uint8_t ch, uint8_t en)
 
     i2cdevReadByte(I2Cx, devAddr, AXP202_LDO234_DC23_CTL, buffer);
     data = buffer[0];
-    if (en) {
-        data |= (1 << ch);
-    } else {
-        data &= (~(1 << ch));
+    
+    if (!dc) {   //LDO
+        if (en) {
+            data |= (1 << ch);
+        } else {
+            data &= (~(1 << ch));
+        }
+    } else {      //DCDC
+        if (en) {
+            data |= (1 << dcEnableOffset[ch]);
+        } else {
+            data &= (~(1 << dcEnableOffset[ch]));
+        }
     }
 
     if (_chip_id == AXP202_CHIP_ID) {
@@ -284,8 +300,6 @@ uint16_t _getRegistResult(uint8_t regh8, uint8_t regl4)
     lv = buffer[0];
     return (hv << 4) | (lv & 0x0F);
 }
-
-
 
 float getAcinVoltage()
 {

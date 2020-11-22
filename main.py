@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import gc
-from machine import Pin, SoftI2C, reset, I2S, deepsleep, mpu6886, axp192
+from machine import Pin, SoftI2C, SPI, I2S, mpu6886, axp192
 import network
 from neopixel import NeoPixel
 from config import *

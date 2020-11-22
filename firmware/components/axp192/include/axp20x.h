@@ -575,7 +575,7 @@ typedef uint8_t (*axp_com_fptr_t)(uint8_t dev_addr, uint8_t reg_addr, uint8_t *d
 int axpInit(I2C_Dev *i2cPort, uint8_t addr, char isAxp173);
 
 // Power Output Control
-int setPowerOutPut(uint8_t ch, uint8_t en);
+int setPowerOutPut(uint8_t ch, uint8_t en, bool dc);
 
 char isBatteryConnect();
 char isCharging();
