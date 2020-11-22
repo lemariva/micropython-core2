@@ -28,7 +28,11 @@ This file is part of hardware agnostic I2C driver for PCF8563 RTC:
 https://github.com/tuupola/pcf8563
 
 SPDX-License-Identifier: MIT
+*/
 
+/*
+Copyright (c) 2020 Mauro Riva
+Modified by Mauro Riva (lemariva.com) for MicroPython support
 */
 
 #ifndef _PCF8563_H

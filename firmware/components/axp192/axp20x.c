@@ -28,6 +28,11 @@ github:https://github.com/lewisxhe/AXP202X_Libraries
 */
 /////////////////////////////////////////////////////////////////
 
+/*
+Copyright (c) 2020 Mauro Riva
+Adapted by Mauro Riva (lemariva.com) for MicroPython support
+*/
+
 #include "i2cdev.h"
 #include "axp20x.h"
 #include <math.h>

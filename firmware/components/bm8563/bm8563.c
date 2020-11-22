@@ -31,6 +31,12 @@ SPDX-License-Identifier: MIT
 
 */
 
+/*
+Copyright (c) 2020 Mauro Riva
+Adapted by Mauro Riva (lemariva.com) for MicroPython support
+*/
+
+
 #include <stdint.h>
 #include <time.h>
 
@@ -64,23 +70,20 @@ int pcf8563_init() {
     if (!status) 
         return PCF8563_ERROR_NOTTY;
 
-    return PCF8563_OK; 
-    
+    isInit = true;
+    return PCF8563_OK;
 }
 
 pcf8563_err_t pcf8563Init(I2C_Dev *i2cPort)
 {
-
     if (isInit) {
         return 0;
     }
 
     I2Cx = i2cPort;
     devAddr = PCF8563_ADDRESS;
-    isInit = true;
-
+    
     return pcf8563_init();
-
 }
 
 pcf8563_err_t pcf8563_read(struct tm *time)

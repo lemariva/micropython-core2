@@ -28,6 +28,10 @@ github:https://github.com/lewisxhe/AXP202X_Libraries
 */
 /////////////////////////////////////////////////////////////////
 
+/*
+Copyright (c) 2020 Mauro Riva
+Adapted by Mauro Riva (lemariva.com) for MicroPython support
+*/
 
 #pragma once
 
