@@ -40,6 +40,8 @@ extern "C" {
 
 #include <stdint.h>
 #include <time.h>
+#include "i2cdev.h"
+
 
 #define	PCF8563_ADDRESS	         (0x51)
 #define	PCF8563_CONTROL_STATUS1  (0x00)
@@ -95,20 +97,15 @@ extern "C" {
 #define PCF8563_OK               (0x00)
 #define PCF8563_ERR_LOW_VOLTAGE  (0x80)
 
-/* These should be provided by the HAL. */
-typedef struct {
-    int32_t (* read)(void *handle, uint8_t address, uint8_t reg, uint8_t *buffer, uint16_t size);
-    int32_t (* write)(void *handle, uint8_t address, uint8_t reg, const uint8_t *buffer, uint16_t size);
-    void *handle;
-} pcf8563_t;
-
 typedef int32_t pcf8563_err_t;
 
-pcf8563_err_t pcf8563_init(const pcf8563_t *pcf);
-pcf8563_err_t pcf8563_read(const pcf8563_t *pcf, struct tm *time);
-pcf8563_err_t pcf8563_write(const pcf8563_t *pcf, const struct tm *time);
-pcf8563_err_t pcf8563_ioctl(const pcf8563_t *pcf, int16_t command, void *buffer);
-pcf8563_err_t pcf8563_close(const pcf8563_t *pcf);
+pcf8563_err_t pcf8563Init(I2C_Dev *i2cPort);
+pcf8563_err_t pcf8563_init();
+pcf8563_err_t pcf8563_read(struct tm *time);
+pcf8563_err_t pcf8563_write(const struct tm *time);
+pcf8563_err_t pcf8563_ioctl(int16_t command, void *buffer);
+pcf8563_err_t pcf8563_start_timer(bool enable);
+pcf8563_err_t pcf8563_close();
 
 #ifdef __cplusplus
 }
