@@ -18,6 +18,7 @@ extern const mp_obj_type_t machine_dac_type;
 extern const mp_obj_type_t machine_pwm_type;
 extern const mp_obj_type_t machine_hw_axp192_type;
 extern const mp_obj_type_t machine_hw_bm8563_type;
+extern const mp_obj_type_t machine_hw_ft6336u_type;
 extern const mp_obj_type_t machine_hw_i2c_type;
 extern const mp_obj_type_t machine_hw_i2s_type;
 extern const mp_obj_type_t machine_hw_mpu6886_type;

@@ -179,6 +179,7 @@ INC_ESPCOMP += -I$(ESPCOMP)/i2c_bus/include
 INC_ESPCOMP += -I$(ESPCOMP)/mpu6886/include
 INC_ESPCOMP += -I$(ESPCOMP)/axp192/include
 INC_ESPCOMP += -I$(ESPCOMP)/bm8563/include
+INC_ESPCOMP += -I$(ESPCOMP)/ft6336u/include
 
 ifeq ($(ESPIDF_CURHASH),$(ESPIDF_SUPHASH_V4))
 INC_ESPCOMP += -I$(ESPCOMP)/esp_common/include
@@ -340,6 +341,7 @@ SRC_C = \
 	machine_mpu6886.c \
 	machine_axp192.c \
 	machine_bm8563.c \
+	machine_ft6336u.c \
 	machine_pwm.c \
 	machine_uart.c \
 	modmachine.c \
@@ -615,6 +617,7 @@ M5STACK_CORE2_O = $(patsubst %.c,%.o,\
     $(wildcard $(ESPCOMP)/i2c_bus/*.c) \
 	$(wildcard $(ESPCOMP)/axp192/*.c) \
 	$(wildcard $(ESPCOMP)/bm8563/*.c) \
+	$(wildcard $(ESPCOMP)/ft6336u/*.c) \
     )
 
 OBJ_ESPIDF =
