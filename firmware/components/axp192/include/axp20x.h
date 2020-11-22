@@ -291,7 +291,7 @@ github:https://github.com/lewisxhe/AXP202X_Libraries
 
 #define FORCED_OPEN_DCDC3(x) (x |= (AXP202_ON << AXP202_DCDC3))
 #define BIT_MASK(x) (1 << x)
-#define IS_OPEN(reg, channel) (char)(reg & BIT_MASK(channel))
+#define IS_OPEN(reg, channel) (bool)(reg & BIT_MASK(channel))
 
 
 enum {
@@ -572,47 +572,47 @@ typedef enum {
 
 typedef uint8_t (*axp_com_fptr_t)(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint8_t len);
 
-int axpInit(I2C_Dev *i2cPort, uint8_t addr, char isAxp173);
+int axpInit(I2C_Dev *i2cPort, uint8_t addr, bool isAxp173);
 
 // Power Output Control
 int setPowerOutPut(uint8_t ch, uint8_t en, bool dc);
 
-char isBatteryConnect();
-char isCharging();
-char isLDO2Enable();
-char isLDO3Enable();
-char isLDO4Enable();
-char isDCDC3Enable();
-char isDCDC2Enable();
-char isChargingEnable();
-char isVBUSPlug();
-char isExtenEnable();
+bool isBatteryConnect();
+bool isCharging();
+bool isLDO2Enable();
+bool isLDO3Enable();
+bool isLDO4Enable();
+bool isDCDC3Enable();
+bool isDCDC2Enable();
+bool isChargingEnable();
+bool isVBUSPlug();
+bool isExtenEnable();
 
 //Only axp192 chip
-char isDCDC1Enable();
+bool isDCDC1Enable();
 
 
 //IRQ Status
-char isAcinOverVoltageIRQ();
-char isAcinPlugInIRQ();
-char isAcinRemoveIRQ();
-char isVbusOverVoltageIRQ();
-char isVbusPlugInIRQ();
-char isVbusRemoveIRQ();
-char isVbusLowVHOLDIRQ();
+bool isAcinOverVoltageIRQ();
+bool isAcinPlugInIRQ();
+bool isAcinRemoveIRQ();
+bool isVbusOverVoltageIRQ();
+bool isVbusPlugInIRQ();
+bool isVbusRemoveIRQ();
+bool isVbusLowVHOLDIRQ();
 
-char isBattPlugInIRQ();
-char isBattRemoveIRQ();
-char isBattEnterActivateIRQ();
-char isBattExitActivateIRQ();
-char isChargingIRQ();
-char isChargingDoneIRQ();
-char isBattTempLowIRQ();
-char isBattTempHighIRQ();
+bool isBattPlugInIRQ();
+bool isBattRemoveIRQ();
+bool isBattEnterActivateIRQ();
+bool isBattExitActivateIRQ();
+bool isChargingIRQ();
+bool isChargingDoneIRQ();
+bool isBattTempLowIRQ();
+bool isBattTempHighIRQ();
 
-char isPEKShortPressIRQ();
-char isPEKLongtPressIRQ();
-char isTimerTimeoutIRQ();
+bool isPEKShortPressIRQ();
+bool isPEKLongtPressIRQ();
+bool isTimerTimeoutIRQ();
 
 //! Group4 ADC data
 float getAcinVoltage();

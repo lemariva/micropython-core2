@@ -282,27 +282,14 @@ STATIC mp_obj_t mp_axp192_bat_charging_led_mode(mp_uint_t n_args, const mp_obj_t
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_bat_charging_led_mode_obj, 1, 2, mp_axp192_bat_charging_led_mode);
 
-STATIC mp_obj_t mp_axp192_battery_charging(mp_uint_t n_args, const mp_obj_t *args)  {
-    int ischarging = isCharging();
-    return mp_obj_new_int(ischarging);
-}
-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_battery_charging_obj, 1, 1, mp_axp192_battery_charging);
-
-STATIC mp_obj_t mp_axp192_battery_connected(mp_uint_t n_args, const mp_obj_t *args)  {
-    int batconnected = isBatteryConnect();
-    return mp_obj_new_int(batconnected);
-}
-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_battery_connected_obj, 1, 1, mp_axp192_battery_connected);
 
 STATIC mp_obj_t mp_axp192_shutdown(mp_uint_t n_args, const mp_obj_t *args)  {
-    int shutdown = apxShutdown();
-    return mp_obj_new_int(shutdown);
+    return mp_obj_new_int(apxShutdown());
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_shutdown_obj, 1, 1, mp_axp192_shutdown);
 
 STATIC mp_obj_t mp_axp192_get_temp(mp_uint_t n_args, const mp_obj_t *args)  {
-    float temperature = getTemp();
-	return mp_obj_new_float(temperature);
+	return mp_obj_new_float(getTemp());
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_get_temp_obj, 1, 1, mp_axp192_get_temp);
 
@@ -311,6 +298,21 @@ STATIC mp_obj_t mp_axp192_limiting_off(mp_uint_t n_args, const mp_obj_t *args)  
 	return mp_obj_new_int(axp192_code);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_limiting_off_obj, 1, 1, mp_axp192_limiting_off);
+
+STATIC mp_obj_t mp_axp192_bat_status(mp_uint_t n_args, const mp_obj_t *args)  {
+    mp_obj_t tuple[6];
+    
+    tuple[0] = mp_obj_new_int(isBatteryConnect());
+    tuple[1] = mp_obj_new_int(isCharging());
+    tuple[2] = mp_obj_new_float(getBattInpower());
+    tuple[3] = mp_obj_new_float(getBattVoltage());
+    tuple[4] = mp_obj_new_float(getBattChargeCurrent());
+    tuple[5] = mp_obj_new_float(getBattDischargeCurrent());
+
+    return mp_obj_new_tuple(6, tuple);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_axp192_bat_status_obj, 1, 1, mp_axp192_bat_status);
+
 
 STATIC mp_obj_t mp_axp192_set_gpio_mode(mp_uint_t n_args, const mp_obj_t *args)  {
     mp_int_t axp192_code = 0;
@@ -364,11 +366,11 @@ STATIC const mp_rom_map_elem_t hw_axp192_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_set_bat_charging_voltage), MP_ROM_PTR(&mp_axp192_set_bat_charging_voltage_obj) },
     { MP_ROM_QSTR(MP_QSTR_enable_bat_charging), MP_ROM_PTR(&mp_axp192_enable_bat_charging_obj) },
     { MP_ROM_QSTR(MP_QSTR_bat_charging_led_mode), MP_ROM_PTR(&mp_axp192_bat_charging_led_mode_obj) },
-    { MP_ROM_QSTR(MP_QSTR_is_battery_charging), MP_ROM_PTR(&mp_axp192_battery_charging_obj) },
-    { MP_ROM_QSTR(MP_QSTR_is_battery_connected), MP_ROM_PTR(&mp_axp192_battery_connected_obj) },
+    { MP_ROM_QSTR(MP_QSTR_battery_status), MP_ROM_PTR(&mp_axp192_bat_status_obj) },
     { MP_ROM_QSTR(MP_QSTR_shutdown), MP_ROM_PTR(&mp_axp192_shutdown_obj) },
     { MP_ROM_QSTR(MP_QSTR_limiting_off), MP_ROM_PTR(&mp_axp192_limiting_off_obj) },
     { MP_ROM_QSTR(MP_QSTR_gpio_mode), MP_ROM_PTR(&mp_axp192_set_gpio_mode_obj) },
+    
     // { MP_ROM_QSTR(MP_QSTR_gpio_read), MP_ROM_PTR(&mp_axp192_gpio_read_obj) },    
     // { MP_ROM_QSTR(MP_QSTR_gpio_write), MP_ROM_PTR(&mp_axp192_gpio_write_obj) },
     { MP_ROM_QSTR(MP_QSTR_LED_OFF), MP_ROM_INT(AXP20X_LED_OFF) },

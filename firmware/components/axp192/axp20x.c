@@ -67,24 +67,15 @@ const uint8_t dcEnableOffset[] = {
     0x01
 };
 
-// static const uint8_t startupParams[], longPressParams[], shutdownParams[], targetVolParams[];
-//  uint8_t _outputReg;
-// uint8_t _address, _irq[5], _chip_id, _gpio[4];
-// axp_com_fptr_t _read_cb = nullptr;
-// axp_com_fptr_t _write_cb = nullptr;
-
 static uint8_t devAddr, _irq[5], _chip_id, _gpio[4];
 static uint8_t _outputReg;
 static I2C_Dev *I2Cx;
 static uint8_t buffer[14];
 static bool isInit;
-
 char _isAxp173;
 
 
 // Power Output Control register
-
-
 int _axp_probe()
 {
     uint8_t data;
@@ -117,10 +108,10 @@ int _axp_probe()
     return AXP_FAIL;
 }
 
-int axpInit(I2C_Dev *i2cPort, uint8_t addr, char isAxp173)
+int axpInit(I2C_Dev *i2cPort, uint8_t addr, bool isAxp173)
 {
     if (isInit) {
-        return 0;
+        return AXP_PASS;
     }
 
     I2Cx = i2cPort;
@@ -132,7 +123,7 @@ int axpInit(I2C_Dev *i2cPort, uint8_t addr, char isAxp173)
 
 
 //Only axp192 chip
-char isDCDC1Enable()
+bool isDCDC1Enable()
 {
     if (_chip_id == AXP192_CHIP_ID)
         return IS_OPEN(_outputReg, AXP192_DCDC1);
@@ -141,7 +132,7 @@ char isDCDC1Enable()
     return 0;
 }
 
-char isExtenEnable()
+bool isExtenEnable()
 {
     if (_chip_id == AXP192_CHIP_ID)
         return IS_OPEN(_outputReg, AXP192_EXTEN);
@@ -156,7 +147,7 @@ char isExtenEnable()
     return 0;
 }
 
-char isLDO2Enable()
+bool isLDO2Enable()
 {
     if (_chip_id == AXP173_CHIP_ID) {
         return IS_OPEN(_outputReg, AXP173_LDO2);
@@ -165,7 +156,7 @@ char isLDO2Enable()
     return IS_OPEN(_outputReg, AXP202_LDO2);
 }
 
-char isLDO3Enable()
+bool isLDO3Enable()
 {
     if (_chip_id == AXP192_CHIP_ID)
         return IS_OPEN(_outputReg, AXP192_LDO3);
@@ -176,7 +167,7 @@ char isLDO3Enable()
     return 0;
 }
 
-char isLDO4Enable()
+bool isLDO4Enable()
 {
     if (_chip_id == AXP202_CHIP_ID)
         return IS_OPEN(_outputReg, AXP202_LDO4);
@@ -185,7 +176,7 @@ char isLDO4Enable()
     return 0;
 }
 
-char isDCDC2Enable()
+bool isDCDC2Enable()
 {
     if (_chip_id == AXP173_CHIP_ID) {
         uint8_t data;
@@ -197,7 +188,7 @@ data = buffer[0];
     return IS_OPEN(_outputReg, AXP202_DCDC2);
 }
 
-char isDCDC3Enable()
+bool isDCDC3Enable()
 {
     if (_chip_id == AXP173_CHIP_ID)
         return 0;
@@ -261,7 +252,7 @@ int setPowerOutPut(uint8_t ch, uint8_t en, bool dc)
     return AXP_FAIL;
 }
 
-char isCharging()
+bool isCharging()
 {
     uint8_t reg;
     if (!isInit)
@@ -271,7 +262,7 @@ char isCharging()
     return IS_OPEN(reg, 6);
 }
 
-char isBatteryConnect()
+bool isBatteryConnect()
 {
     uint8_t reg;
     if (!isInit)
@@ -749,90 +740,90 @@ void clearIRQ()
     memset(_irq, 0, sizeof(_irq));
 }
 
-char isAcinOverVoltageIRQ()
+bool isAcinOverVoltageIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(7));
+    return (bool)(_irq[0] & BIT_MASK(7));
 }
 
-char isAcinPlugInIRQ()
+bool isAcinPlugInIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(6));
+    return (bool)(_irq[0] & BIT_MASK(6));
 }
 
-char isAcinRemoveIRQ()
+bool isAcinRemoveIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(5));
+    return (bool)(_irq[0] & BIT_MASK(5));
 }
 
-char isVbusOverVoltageIRQ()
+bool isVbusOverVoltageIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(4));
+    return (bool)(_irq[0] & BIT_MASK(4));
 }
 
-char isVbusPlugInIRQ()
+bool isVbusPlugInIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(3));
+    return (bool)(_irq[0] & BIT_MASK(3));
 }
 
-char isVbusRemoveIRQ()
+bool isVbusRemoveIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(2));
+    return (bool)(_irq[0] & BIT_MASK(2));
 }
 
-char isVbusLowVHOLDIRQ()
+bool isVbusLowVHOLDIRQ()
 {
-    return (char)(_irq[0] & BIT_MASK(1));
+    return (bool)(_irq[0] & BIT_MASK(1));
 }
 
-char isBattPlugInIRQ()
+bool isBattPlugInIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(7));
+    return (bool)(_irq[1] & BIT_MASK(7));
 }
-char isBattRemoveIRQ()
+bool isBattRemoveIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(6));
+    return (bool)(_irq[1] & BIT_MASK(6));
 }
-char isBattEnterActivateIRQ()
+bool isBattEnterActivateIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(5));
+    return (bool)(_irq[1] & BIT_MASK(5));
 }
-char isBattExitActivateIRQ()
+bool isBattExitActivateIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(4));
+    return (bool)(_irq[1] & BIT_MASK(4));
 }
-char isChargingIRQ()
+bool isChargingIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(3));
+    return (bool)(_irq[1] & BIT_MASK(3));
 }
-char isChargingDoneIRQ()
+bool isChargingDoneIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(2));
+    return (bool)(_irq[1] & BIT_MASK(2));
 }
-char isBattTempLowIRQ()
+bool isBattTempLowIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(1));
+    return (bool)(_irq[1] & BIT_MASK(1));
 }
-char isBattTempHighIRQ()
+bool isBattTempHighIRQ()
 {
-    return (char)(_irq[1] & BIT_MASK(0));
-}
-
-char isPEKShortPressIRQ()
-{
-    return (char)(_irq[2] & BIT_MASK(1));
+    return (bool)(_irq[1] & BIT_MASK(0));
 }
 
-char isPEKLongtPressIRQ()
+bool isPEKShortPressIRQ()
 {
-    return (char)(_irq[2] & BIT_MASK(0));
+    return (bool)(_irq[2] & BIT_MASK(1));
 }
 
-char isTimerTimeoutIRQ()
+bool isPEKLongtPressIRQ()
 {
-    return (char)(_irq[4] & BIT_MASK(7));
+    return (bool)(_irq[2] & BIT_MASK(0));
 }
 
-char isVBUSPlug()
+bool isTimerTimeoutIRQ()
+{
+    return (bool)(_irq[4] & BIT_MASK(7));
+}
+
+bool isVBUSPlug()
 {
     if (!isInit)
         return AXP_NOT_INIT;
@@ -1142,11 +1133,11 @@ float getSettingChargeCurrent()
     return cur;
 }
 
-char isChargingEnable()
+bool isChargingEnable()
 {
     uint8_t val;
     if (!isInit)
-        return 0;
+        return false;
     i2cdevReadByte(I2Cx, devAddr, AXP202_CHARGE1, buffer);
     val = buffer[0];
     if (val & (1 << 7)) {
