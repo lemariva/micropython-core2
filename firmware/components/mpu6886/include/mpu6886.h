@@ -28,6 +28,11 @@ THE SOFTWARE.
 ===============================================
 */
 
+/*
+Copyright (c) 2020 Mauro Riva
+Adapted by Mauro Riva (lemariva.com) for MicroPython support
+*/
+
 #ifndef _MPU6886_H_
 #define _MPU6886_H_
 
@@ -35,6 +40,9 @@ THE SOFTWARE.
 
 #define MPU6886_DEFAULT_ADDRESS     0x68
 #define MPU6886_SELF_TEST_DELAY_MS  10
+
+#define MPU6886_ERROR_NOTTY      (-1)
+#define MPU6886_OK               (0x00)
 
 //Product ID Description for MPU6886:  | High 4 bits  | Low 4 bits        |
 //                                     | Product Name | Product Revision  |
@@ -418,7 +426,7 @@ THE SOFTWARE.
 
 // note: DMP code memory blocks defined at end of header file
 
-void mpu6886Init(I2C_Dev *i2cPort);
+int mpu6886Init(I2C_Dev *i2cPort);
 bool mpu6886Test(void);
 
 bool mpu6886TestConnection();

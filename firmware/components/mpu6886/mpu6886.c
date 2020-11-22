@@ -8,7 +8,6 @@
  I2Cdev device library code is placed under the MIT license
  Copyright (c) 2011 Jeff Rowberg
  Adapted to Crazyflie FW by Bitcraze
- Adapted to MPU6886 (MicroPython) by Mauro Riva (lemariva.com)
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +29,12 @@
  ===============================================
  */
 
+/*
+Copyright (c) 2020 Mauro Riva
+Adapted by Mauro Riva (lemariva.com) for MicroPython support
+*/
+
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -48,25 +53,30 @@ static bool isInit;
 /** Default constructor, uses default I2C address.
  * @see MPU6886_DEFAULT_ADDRESS
  */
-void mpu6886Init(I2C_Dev *i2cPort)
+int mpu6886Init(I2C_Dev *i2cPort)
 {
     if (isInit) {
-        return;
+        return MPU6886_ERROR_NOTTY;
     }
 
     I2Cx = i2cPort;
     devAddr = MPU6886_DEFAULT_ADDRESS;
-    isInit = true;
+    
+    if (mpu6886Test()) {
+        isInit = true;
+        return MPU6886_OK;
+    }
+    else { 
+        return MPU6886_ERROR_NOTTY;
+    }
 }
 
 bool mpu6886Test(void)
 {
     bool testStatus;
 
-    if (!isInit) {
-        return false;
-    }
-    testStatus = mpu6886TestConnection();
+    testStatus = mpu6886TestConnection();  
+
     return testStatus;
 }
 

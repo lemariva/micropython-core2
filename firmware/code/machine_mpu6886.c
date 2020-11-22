@@ -93,6 +93,7 @@ STATIC mp_obj_t mpu6886_quaternion_init() {
 }
 
 STATIC void machine_hw_mpu6886_init(machine_hw_mpu6886_obj_t *self, uint32_t freq, uint32_t timeout_us, bool first_init) {
+    mp_int_t mpu6886_code = 0;
     // bus definition
     pSensorBusDef.i2cPort = I2C_NUM_0;
     pSensorBusDef.i2cClockSpeed = freq;
@@ -104,15 +105,14 @@ STATIC void machine_hw_mpu6886_init(machine_hw_mpu6886_obj_t *self, uint32_t fre
     i2cdevInit(&pSensorsBus);
     mp_hal_delay_us(100000);
     
-    mpu6886Init(&pSensorsBus);
-    mp_hal_delay_us(100000);
-
-    // test mpu6886 
-    if (mpu6886TestConnection() == true) {
-        mp_printf(&mp_plat_print, "MPU6886 I2C connection [OK].\n");
+    // init mpu6886
+    mpu6886_code = mpu6886Init(&pSensorsBus);
+    if (mpu6886_code == MPU6886_OK) {
+       mp_printf(&mp_plat_print, "MPU6886 I2C connection [OK].\n");
     } else {
         mp_raise_ValueError(MP_ERROR_TEXT("MPU6886 I2C connection [FAIL].\n"));
     }
+    mp_hal_delay_us(100000);
 
     // Reset mpu6886
     mpu6886Reset();
