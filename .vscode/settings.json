@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "i2cdev.h": "c",
+        "stm32_legacy.h": "c",
+        "type_traits": "c"
+    }
+}
