@@ -13,27 +13,31 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import gc
 import lvgl as lv
-import lvesp32
 
-from machine import Pin, SPI, I2S, SPI, mpu6886, axp192, bm8563, ft6336u
-from axpili9342 import ili9342
-from m5stack import M5Stack
+from axpili9342 import ili9341
+from ft6x36 import ft6x36
 
-m5core = M5Stack()
+display = ili9341()
+touch = ft6x36()
 
-display = ili9342(m5stack=m5core)
-mpu = mpu6886()
-clock = bm8563()
-touch = ft6336u()
+##### main script #####
 
-scr = lv.obj()
-btn = lv.btn(scr)
-btn.align(lv.scr_act(), lv.ALIGN.CENTER, 0, 0)
-label = lv.label(btn)
-label.set_text("Button")
+def drag_event_handler(e):
+    obj = e.get_target()
+    indev = lv.indev_get_act()
+    vect = lv.point_t()
+    indev.get_vect(vect)
+    x = obj.get_x() + vect.x
+    y = obj.get_y() + vect.y
+    obj.set_pos(x, y)
 
-# Load the screen
-lv.scr_load(scr)
+obj = lv.obj(lv.scr_act())
+obj.set_size(150, 100)
+obj.add_event_cb(drag_event_handler, lv.EVENT.PRESSING, None)
 
+label = lv.label(obj)
+label.set_text("Drag me")
+label.center()
