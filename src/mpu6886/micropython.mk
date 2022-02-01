@@ -1,0 +1,4 @@
+MPU6886_MOD_DIR := $(USERMOD_DIR)
+SRC_USERMOD += $(addprefix $(MPU6886_MOD_DIR)/, machine_mpu6886.c)
+CFLAGS_USERMOD += -I$(MPU6886_MOD_DIR) 
+

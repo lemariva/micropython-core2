@@ -1,0 +1,4 @@
+AXP192_MOD_DIR := $(USERMOD_DIR)
+SRC_USERMOD += $(addprefix $(AXP192_MOD_DIR)/, machine_axp192.c)
+CFLAGS_USERMOD += -I$(AXP192_MOD_DIR)
+

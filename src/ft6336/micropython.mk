@@ -1,0 +1,4 @@
+FT6336_MOD_DIR := $(USERMOD_DIR)
+SRC_USERMOD += $(addprefix $(FT6336_MOD_DIR)/, machine_ft6336u.c)
+CFLAGS_USERMOD += -I$(FT6336_MOD_DIR)
+
