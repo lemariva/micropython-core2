@@ -48,13 +48,13 @@ label.center()
 I've included a compiled MicroPython firmware (check the `firmware` folder). The firmware was compiled using following versions and hashes:
 
 * esp-idf v4.4.x - [`b64925c56`](https://github.com/espressif/esp-idf/commit/b64925c5673206100eaf4337d064d0fe3507eaec)
-* MicroPython v1.18-599-gbf62dfc78-dirty - [`bf62dfc784`](https://github.com/lvgl/lv_micropython/commit/bf62dfc78497d47ced3b0931a270e553d4d2552b)
+* MicroPython v1.18-599-bf62dfc784-dirty - [`bf62dfc784`](https://github.com/lvgl/lv_micropython/commit/bf62dfc78497d47ced3b0931a270e553d4d2552b)
 
 
 To flash it to the board, you need to type the following:
 ```sh
 esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
-esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 1152000 write_flash -z 0x1000 lv_micropython_m5core2_gbf62dfc78_esp32_idf4_4_x.bin
+esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 1152000 write_flash -z 0x1000 lv_micropython_m5core2_bf62dfc784_esp32_idf4_4_x.bin
 ```
 More information is available in this [tutorial](https://lemariva.com/blog/2022/01/micropython-upgraded-support-cameras-m5camera-esp32-cam-etc).
 
