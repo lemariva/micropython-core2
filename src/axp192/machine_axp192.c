@@ -381,7 +381,7 @@ STATIC const mp_rom_map_elem_t hw_axp192_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_enable_bat_charge), MP_ROM_PTR(&mp_axp192_enable_bat_charge_obj) },
     { MP_ROM_QSTR(MP_QSTR_bat_charge_led_mode), MP_ROM_PTR(&mp_axp192_bat_charge_led_mode_obj) },
     { MP_ROM_QSTR(MP_QSTR_battery_status), MP_ROM_PTR(&mp_axp192_bat_status_obj) },
-    { MP_ROM_QSTR(MP_QSTR_shutdown), MP_ROM_PTR(&mp_axp192_shutdown_obj) },
+    { MP_ROM_QSTR(MP_QSTR_power_off), MP_ROM_PTR(&mp_axp192_shutdown_obj) },
     { MP_ROM_QSTR(MP_QSTR_limiting_off), MP_ROM_PTR(&mp_axp192_limiting_off_obj) },
     { MP_ROM_QSTR(MP_QSTR_set_gpio_mode), MP_ROM_PTR(&mp_axp192_set_gpio_mode_obj) },
     
