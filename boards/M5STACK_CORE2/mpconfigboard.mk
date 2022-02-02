@@ -1,8 +1,9 @@
 
 SDKCONFIG += boards/sdkconfig.base
 SDKCONFIG += boards/sdkconfig.spiram
+SDKCONFIG += boards/sdkconfig.ble
 SDKCONFIG += boards/sdkconfig.240mhz
-SDKCONFIG += boards/M5STACK_CORE2/sdkconfig.board
+SDKCONFIG += boards/$(BOARD_DIR)/sdkconfig.board
 
 FROZEN_MANIFEST ?= $(BOARD_DIR)/manifest.py
 
