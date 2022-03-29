@@ -20,7 +20,7 @@ import gc
 import lvgl as lv
 
 from axpili9342 import ili9341
-from ft6x36c import ft6x36
+from ft6x36 import ft6x36
 
 display = ili9341()
 touch = ft6x36()
